@@ -18,7 +18,6 @@ def auto_downsample_ratio(h, w):
     return min(512 / max(h, w), 1)
 
 download_url = "https://huggingface.co/briaai/RMBG-1.4/resolve/main/model.pth"
-device = get_torch_device()
 model_input_size = [1024,1024]
 
 class BriaaiRembg:
@@ -40,6 +39,8 @@ class BriaaiRembg:
 
 
     def matting(self, video_frames, version, fp16, bg_color, batch_size, **kwargs):
+        device = get_torch_device()
+
         model_path = load_file_from_url(download_url, file_name=f"briaai_rmbg_{version}.pth", model_dir=CKPTS_PATH)
         model = BriaRMBG()
         model.load_state_dict(torch.load(model_path, map_location="cpu"))
